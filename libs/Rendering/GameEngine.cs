@@ -458,4 +458,64 @@ public sealed class GameEngine
             SaveState(GetCurrentState());
         }
     }
+
+    public void MainMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("===== ESCAPE ROOM GAME =====");
+        Console.WriteLine("1. START");
+        Console.WriteLine("2. LOAD");
+        Console.WriteLine("3. EXIT");
+        Console.Write("Select an option: ");
+
+        string choice = Console.ReadLine();
+        switch (choice)
+        {
+            case "1":
+                StartGame();
+                break;
+            case "2":
+                LoadMenu();
+                break;
+            case "3":
+                Environment.Exit(0);
+                break;
+            default:
+                Console.WriteLine("Invalid choice, please try again.");
+                MainMenu();
+                break;
+        }
+    }
+
+    private void StartGame()
+    {
+        currentLevel = 0;
+        Setup();
+    }
+
+    private void LoadMenu()
+    {
+        Console.Clear();
+        Console.WriteLine("Select a save slot to load:");
+        for (int i = 1; i <= 5; i++)
+        {
+            Console.WriteLine($"{i}. {GetInformationStringAboutSaveSlot(i)}");
+        }
+        Console.Write("Select a slot: ");
+        if (int.TryParse(Console.ReadLine(), out int slot) && slot >= 1 && slot <= 5)
+        {
+            LoadGame(slot);
+            Render();
+        }
+        else
+        {
+            Console.WriteLine("Invalid choice, please try again.");
+            LoadMenu();
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        GameEngine.Instance.MainMenu();
+    }
 }

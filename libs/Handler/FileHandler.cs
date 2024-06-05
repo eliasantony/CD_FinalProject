@@ -53,8 +53,18 @@ public static class FileHandler
 
         try
         {
+            string fullPath = filePath + assetsPathToFile;
+            string directoryPath = Path.GetDirectoryName(fullPath);
+
+            // Check if the directory exists
+            if (!Directory.Exists(directoryPath))
+            {
+                // Create the directory
+                Directory.CreateDirectory(directoryPath);
+            }
+
             string jsonContent = JsonConvert.SerializeObject(objectToWrite, Formatting.Indented);
-            File.WriteAllText(filePath + assetsPathToFile, jsonContent);
+            File.WriteAllText(fullPath, jsonContent);
         }
         catch (Exception ex)
         {
