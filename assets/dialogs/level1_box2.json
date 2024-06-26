@@ -1,0 +1,30 @@
+[
+  {
+    "dialogID": "1",
+    "Text": "Who wrote 'Romeo and Juliet'?",
+    "Responses": [
+      {
+        "ResponseText": "William Shakespeare",
+        "NextNode": {"dialogID": "2"}
+      },
+      {
+        "ResponseText": "Charles Dickens",
+        "NextNode": {"dialogID": "3"}
+      },
+      {
+        "ResponseText": "J.K. Rowling",
+        "NextNode": {"dialogID": "3"}
+      }
+    ]
+  },
+  {
+    "dialogID": "2",
+    "Text": "Correct!",
+    "Responses": []
+  },
+  {
+    "dialogID": "3",
+    "Text": "Wrong answer. Try again.",
+    "Responses": [{"ResponseText": "Return to start", "NextNode": {"dialogID": "1"}}]
+  }
+]

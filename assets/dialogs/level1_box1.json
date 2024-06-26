@@ -1,0 +1,30 @@
+[
+  {
+    "dialogID": "1",
+    "Text": "What is the chemical symbol for water?",
+    "Responses": [
+      {
+        "ResponseText": "H2O",
+        "NextNode": {"dialogID": "2"}
+      },
+      {
+        "ResponseText": "CO2",
+        "NextNode": {"dialogID": "3"}
+      },
+      {
+        "ResponseText": "O2",
+        "NextNode": {"dialogID": "3"}
+      }
+    ]
+  },
+  {
+    "dialogID": "2",
+    "Text": "Correct!",
+    "Responses": []
+  },
+  {
+    "dialogID": "3",
+    "Text": "Wrong answer. Try again.",
+    "Responses": [{"ResponseText": "Return to start", "NextNode": {"dialogID": "1"}}]
+  }
+]

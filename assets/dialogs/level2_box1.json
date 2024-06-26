@@ -1,0 +1,30 @@
+[
+  {
+    "dialogID": "1",
+    "Text": "What planet is known as the Red Planet?",
+    "Responses": [
+      {
+        "ResponseText": "Mars",
+        "NextNode": {"dialogID": "2"}
+      },
+      {
+        "ResponseText": "Earth",
+        "NextNode": {"dialogID": "3"}
+      },
+      {
+        "ResponseText": "Jupiter",
+        "NextNode": {"dialogID": "3"}
+      }
+    ]
+  },
+  {
+    "dialogID": "2",
+    "Text": "Correct!",
+    "Responses": []
+  },
+  {
+    "dialogID": "3",
+    "Text": "Wrong answer. Try again.",
+    "Responses": [{"ResponseText": "Return to start", "NextNode": {"dialogID": "1"}}]
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "dialogID": "1",
+    "Text": "What is the speed of light?",
+    "Responses": [
+      {
+        "ResponseText": "299,792,458 meters per second",
+        "NextNode": {"dialogID": "2"}
+      },
+      {
+        "ResponseText": "150,000,000 meters per second",
+        "NextNode": {"dialogID": "3"}
+      },
+      {
+        "ResponseText": "1,000,000 meters per second",
+        "NextNode": {"dialogID": "3"}
+      }
+    ]
+  },
+  {
+    "dialogID": "2",
+    "Text": "Correct!",
+    "Responses": []
+  },
+  {
+    "dialogID": "3",
+    "Text": "Wrong answer. Try again.",
+    "Responses": [{"ResponseText": "Return to start", "NextNode": {"dialogID": "1"}}]
+  }
+]

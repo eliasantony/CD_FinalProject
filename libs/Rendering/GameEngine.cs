@@ -1,26 +1,19 @@
-﻿using System;
-using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.Json.Nodes;
+﻿namespace libs;
 
-namespace libs;
-
-using System.Security.Cryptography;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Linq;
 
 public sealed class GameEngine
 {
     private static GameEngine? _instance;
     private IGameObjectFactory gameObjectFactory;
-    string currentLevelName = "Level 0 - Intro";
-    string currentSubtitle = "";
+    private string currentLevelName = "Level 0 - Intro";
+    private string currentSubtitle = "";
     private int currentLevel = 0;
     private int totalAmountOfLevels = FileHandler.CountLevelFiles();
     private int amountOfBoxesInCurrentLevel = 0;
-    private int timeRemainingInSeconds = 20; 
+    private int timeRemainingInSeconds = 20;
     private bool isTimerRunning = false;
-    
+
     public HashSet<State> states = new HashSet<State>();
 
     public static GameEngine Instance
@@ -37,8 +30,8 @@ public sealed class GameEngine
 
     private GameEngine()
     {
-        //INIT PROPS HERE IF NEEDED
-        gameObjectFactory = new GameObjectFactory();
+        // INIT PROPS HERE IF NEEDED
+        gameObjectFactory = new GameObjectFactory(currentLevel);
     }
 
     private GameObject? _focusedObject;
@@ -46,7 +39,6 @@ public sealed class GameEngine
     private Map map = new Map();
 
     private List<GameObject> gameObjects = new List<GameObject>();
-
 
     public Map GetMap()
     {
@@ -57,7 +49,7 @@ public sealed class GameEngine
     {
         return _focusedObject;
     }
-    
+
     public GameObject GetObjectInFrontOfPlayer()
     {
         int playerPosX = Player.Instance.PosX;
@@ -90,27 +82,46 @@ public sealed class GameEngine
         }
     }
 
+    public void RemoveGameObject(GameObject gameObject)
+    {
+        gameObjects.Remove(gameObject);
+    }
+
     public void Setup()
     {
+        LogUtility.Log($"Setting up level {currentLevel}");
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
         dynamic gameData = FileHandler.ReadJson("/levels/level" + currentLevel + ".json");
+        LogUtility.Log($"Loaded level data: {gameData}");
 
         map.MapWidth = gameData.map.width;
         map.MapHeight = gameData.map.height;
 
-        foreach (var gameObject in gameData.gameObjects)
+        var gameObjectsData = ((IEnumerable<dynamic>)gameData.gameObjects).ToList();
+        var boxes = gameObjectsData.Where(g => (int)g.Type == (int)GameObjectType.Box).ToList();
+        int boxNumber = 1;
+
+        foreach (var gameObject in gameObjectsData)
         {
-            GameObject newGameObject = CreateGameObject(gameObject);
-            if (newGameObject is Box)
+            if ((int)gameObject.Type == (int)GameObjectType.Box)
             {
-                amountOfBoxesInCurrentLevel++;
+                gameObject.BoxNumber = boxNumber++;
             }
-            
-            AddGameObject(newGameObject);
+            GameObject newGameObject = CreateGameObject(gameObject);
+            if (newGameObject != null)
+            {
+                if (newGameObject is Box)
+                {
+                    amountOfBoxesInCurrentLevel++;
+                    LogUtility.Log($"Box added to level: {newGameObject.PosX}, {newGameObject.PosY}");
+                }
+                AddGameObject(newGameObject);
+            }
         }
 
-        _focusedObject = gameObjects.OfType<Player>().First();
+        _focusedObject = gameObjects.OfType<Player>().FirstOrDefault();
+        LogUtility.Log($"Focused object: {_focusedObject}");
 
         StartTimer();
     }
@@ -172,7 +183,7 @@ public sealed class GameEngine
     private void WriteSaveSlots(int currentLine, int middleLine)
     {
         int basePadding = 10;
-        
+
         string output = currentLine switch
         {
             var x when x == middleLine - 2 => GetInformationStringAboutSaveSlot(1),
@@ -187,7 +198,7 @@ public sealed class GameEngine
         output = padding + output;
         Console.Write(output);
     }
-    
+
     private string GetInformationStringAboutSaveSlot(int slotNumber)
     {
         if (FileHandler.SaveExists(slotNumber))
@@ -197,7 +208,7 @@ public sealed class GameEngine
         }
         return "Save slot " + slotNumber + " - Empty";
     }
-    
+
     private void WriteKeyBinds(int currentLine, int middleLine)
     {
         int basePadding = 80;
@@ -215,7 +226,7 @@ public sealed class GameEngine
         Console.ForegroundColor = ConsoleColor.DarkCyan;
         Console.Write(output);
     }
-    
+
     private void WriteLevelInformation(int currentLine, int levelLine)
     {
         if (currentLine == levelLine)
@@ -223,12 +234,13 @@ public sealed class GameEngine
             if (IsLevelCompleted())
             {
                 currentLevelName = "Level " + currentLevel + " - ✅ CLEAR";
-                StopTimer(); //Stop timer when level is finished
+                StopTimer(); // Stop timer when level is finished
             }
             DrawLevelName();
-        } else if (currentLine == levelLine + 1)
+        }
+        else if (currentLine == levelLine + 1)
         {
-            if(GameEngine.Instance.IsLevelCompleted())
+            if (GameEngine.Instance.IsLevelCompleted())
             {
                 if (IsGameOver())
                 {
@@ -245,18 +257,20 @@ public sealed class GameEngine
             }
             DrawSubtitleLine();
 
-        } else if (currentLine == levelLine + 2) {
-             currentSubtitle = "Time: " + timeRemainingInSeconds + "s"; //shows the timer in line 3
-             DrawSubtitleLine();
-        } 
+        }
+        else if (currentLine == levelLine + 2)
+        {
+            currentSubtitle = "Time: " + timeRemainingInSeconds + "s"; // shows the timer in line 3
+            DrawSubtitleLine();
+        }
     }
-    
+
     public void DrawHintWindow(string hint)
     {
-        int windowTop = map.MapHeight + 2; 
+        int windowTop = map.MapHeight + 2;
         int windowLeft = 0;
         int windowWidth = hint.Length;
-        int windowHeight = 3; 
+        int windowHeight = 3;
 
         // Draw the top border of the window
         Console.SetCursorPosition(windowLeft, windowTop);
@@ -278,7 +292,7 @@ public sealed class GameEngine
         // Display the hint text inside the window
         Console.SetCursorPosition(windowLeft + 1, windowTop + 1);
         Console.Write(hint);
-        
+
         Console.WriteLine();
         Console.WriteLine();
     }
@@ -290,25 +304,32 @@ public sealed class GameEngine
 
     public void AddGameObject(GameObject gameObject)
     {
-        gameObjects.Add(gameObject);
+        if (gameObject != null)
+        {
+            gameObjects.Add(gameObject);
+        }
     }
 
     private void PlaceGameObjects()
     {
-
-        gameObjects.ForEach(delegate(GameObject obj)
+        gameObjects.ForEach(delegate (GameObject obj)
         {
             if (obj is not Player)
             {
                 map.Set(obj);
+                LogUtility.Log($"Placed {obj.GetType().Name} at ({obj.PosX}, {obj.PosY})");
             }
         });
-        map.Set(Player.Instance);
+
+        if (Player.Instance != null)
+        {
+            map.Set(Player.Instance);
+            LogUtility.Log($"Placed Player at ({Player.Instance.PosX}, {Player.Instance.PosY})");
+        }
     }
 
     private void DrawObject(GameObject gameObject)
     {
-
         Console.ResetColor();
 
         if (gameObject != null)
@@ -330,7 +351,7 @@ public sealed class GameEngine
         string output = padding + currentLevelName;
         Console.Write(output);
     }
-    
+
     private void DrawSubtitleLine()
     {
         Console.ForegroundColor = ConsoleColor.White;
@@ -338,44 +359,57 @@ public sealed class GameEngine
         string output = padding + currentSubtitle;
         Console.Write(output);
     }
-    
+
     public void RemoveFromBoxesInCurrentLevel()
     {
         amountOfBoxesInCurrentLevel--;
     }
-    
+
     public void IncreaseLevel()
     {
         if (IsLevelCompleted() && !IsGameOver())
         {
             currentLevel++;
-            currentLevelName = "Level " + currentLevel;
-            states.Clear();
-            gameObjects.Clear();
-            amountOfBoxesInCurrentLevel = 0;
-
-            //Set time based on level
-            switch(currentLevel) {
-                case 1:
-                timeRemainingInSeconds = 60;
-                break;
-                case 2:
-                timeRemainingInSeconds = 120;
-                break;
-                case 3:
-                timeRemainingInSeconds = 180;
-                break;
+            if (currentLevel >= totalAmountOfLevels)
+            {
+                Console.WriteLine("Congratulations! You have completed all levels.");
+                Environment.Exit(0);
             }
+            else
+            {
+                currentLevelName = "Level " + currentLevel;
+                states.Clear();
+                gameObjects.Clear();
+                amountOfBoxesInCurrentLevel = 0;
 
-            Setup();
+                // Set time based on level
+                switch (currentLevel)
+                {
+                    case 1:
+                        timeRemainingInSeconds = 60;
+                        break;
+                    case 2:
+                        timeRemainingInSeconds = 120;
+                        break;
+                    case 3:
+                        timeRemainingInSeconds = 180;
+                        break;
+                    default:
+                        timeRemainingInSeconds = 60;
+                        break;
+                }
+
+                Setup();
+            }
         }
     }
-    
+
+
     public void SaveState(State stateToSave)
     {
         states.Add(stateToSave);
     }
-    
+
     public void UndoMove()
     {
         if (states.Count > 0 && !GameEngine.Instance.IsLevelCompleted())
@@ -391,43 +425,43 @@ public sealed class GameEngine
                 {
                     amountOfBoxesInCurrentLevel++;
                 }
-            
+
                 AddGameObject(gameObject);
             }
-            
+
             Player.Instance.PosX = state.playerPosX;
             Player.Instance.PosY = state.playerPosY;
             AddGameObject(Player.Instance);
             _focusedObject = Player.Instance;
         }
     }
-    
+
     public bool IsGameOver()
     {
-        return currentLevel >= totalAmountOfLevels-1 && IsLevelCompleted();
+        return currentLevel >= totalAmountOfLevels - 1 && IsLevelCompleted();
     }
-    
+
     public bool IsLevelCompleted()
     {
         return amountOfBoxesInCurrentLevel == 0;
     }
-    
+
     public int GetCurrentLevel()
     {
         return currentLevel;
     }
-    
+
     public void SaveGame(int saveSlot)
     {
         Save save = new Save(GetCurrentState(), currentLevel, map.MapHeight, map.MapWidth, DateTime.Now);
         FileHandler.SaveGame(save, saveSlot);
     }
-    
+
     public State GetCurrentState()
     {
         return new State(Player.Instance.PosX, Player.Instance.PosY, gameObjects);
     }
-    
+
     public void LoadGame(int saveSlot)
     {
         if (FileHandler.SaveExists(saveSlot))
@@ -445,10 +479,10 @@ public sealed class GameEngine
                 {
                     amountOfBoxesInCurrentLevel++;
                 }
-            
+
                 AddGameObject(gameObject);
             }
-            
+
             Player.Instance.PosX = save.MapState.playerPosX;
             Player.Instance.PosY = save.MapState.playerPosY;
             AddGameObject(Player.Instance);

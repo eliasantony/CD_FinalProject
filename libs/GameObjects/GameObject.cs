@@ -114,6 +114,11 @@ public class GameObject : IGameObject, IMovement
         }
         return 1;
     }
+    
+    public virtual void Interact()
+    {
+        // Default interaction (do nothing)
+    }
 
     public void Remove()
     {

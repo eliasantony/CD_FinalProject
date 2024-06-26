@@ -1,0 +1,30 @@
+[
+  {
+    "dialogID": "1",
+    "Text": "What is the capital of France?",
+    "Responses": [
+      {
+        "ResponseText": "Paris",
+        "NextNode": {"dialogID": "2"}
+      },
+      {
+        "ResponseText": "London",
+        "NextNode": {"dialogID": "3"}
+      },
+      {
+        "ResponseText": "Berlin",
+        "NextNode": {"dialogID": "3"}
+      }
+    ]
+  },
+  {
+    "dialogID": "2",
+    "Text": "Correct!",
+    "Responses": []
+  },
+  {
+    "dialogID": "3",
+    "Text": "Wrong answer. Try again.",
+    "Responses": [{"ResponseText": "Return to start", "NextNode": {"dialogID": "1"}}]
+  }
+]

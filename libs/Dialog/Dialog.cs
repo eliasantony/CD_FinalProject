@@ -1,52 +1,78 @@
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+
 namespace libs;
 
 public class Dialog
-{  
-    private DialogNode _currentNode;
-    private DialogNode _startingNode;
+{
+    public List<DialogNode> Nodes { get; set; }
+    public bool IsCompletedSuccessfully { get; set; }
+    private Dictionary<string, DialogNode> nodeDictionary;
 
-    private DialogNode _endNode;
-
-    public Dialog (DialogNode startingNode)
+    public static Dialog LoadFromJson(string jsonFilePath)
     {
-        _startingNode = startingNode;
-        _currentNode = startingNode;
-        _endNode = new DialogNode("There is nothing left to say...");
+        dynamic jsonData = FileHandler.ReadJson(jsonFilePath);
+        Dialog dialog = new Dialog
+        {
+            Nodes = JsonConvert.DeserializeObject<List<DialogNode>>(jsonData.ToString())
+        };
+        dialog.nodeDictionary = new Dictionary<string, DialogNode>();
+        foreach (var node in dialog.Nodes)
+        {
+            dialog.nodeDictionary[node.DialogID] = node;
+        }
+        dialog.IsCompletedSuccessfully = false; // Initialize as not completed
+        return dialog;
     }
 
     public void Start()
     {
-        //(int x, int y) = Console.GetCursorPosition();
-        //TODO Clear Buffer of Console to overwrite the nodes
-        while (_currentNode != null)
+        var currentNode = Nodes[0];
+        while (true)
         {
-            Console.WriteLine(_currentNode.Text);
-            for (int i = 0; i < _currentNode.Responses.Count; i++)
+            Console.WriteLine(currentNode.Text);
+            if (currentNode.Responses == null || currentNode.Responses.Count == 0)
             {
-                Console.WriteLine($"{i + 1}. {_currentNode.Responses[i].ResponseText}");
+                break;
             }
 
-            int choice;
-            if(_currentNode.Responses.Count == 0)
-                break;
-
-            while (true)
+            for (int i = 0; i < currentNode.Responses.Count; i++)
             {
-                Console.Write("Choose an option: ");
-                if (int.TryParse(Console.ReadLine(), out choice) && choice > 0 && choice <= _currentNode.Responses.Count)
+                Console.WriteLine($"{i + 1}. {currentNode.Responses[i].ResponseText}");
+            }
+
+            int choice = -1;
+            while (choice < 0 || choice >= currentNode.Responses.Count)
+            {
+                Console.Write("Select an option: ");
+                string input = Console.ReadLine();
+                if (int.TryParse(input, out choice))
                 {
+                    choice -= 1;
+                }
+                else
+                {
+                    choice = -1;
+                }
+            }
+
+            if (choice >= 0 && choice < currentNode.Responses.Count)
+            {
+                currentNode = currentNode.Responses[choice]?.NextNode;
+                if (currentNode == null)
+                {
+                    Console.WriteLine("Error: Next node is null.");
                     break;
                 }
+            }
+            else
+            {
                 Console.WriteLine("Invalid choice, please try again.");
             }
-
-            _currentNode = _currentNode.Responses[choice - 1].NextNode;
         }
 
-        _currentNode = _endNode;
-
-        Console.WriteLine("End of dialog.");
-        Thread.Sleep(2000);
-
+        IsCompletedSuccessfully = currentNode?.Responses == null || currentNode.Responses.Count == 0;
     }
+
 }
