@@ -385,6 +385,9 @@ public sealed class GameEngine
                 gameObjects.Clear();
                 amountOfBoxesInCurrentLevel = 0;
 
+                // Set the current level in the GameObjectFactory
+                gameObjectFactory.SetCurrentLevel(currentLevel);
+
                 // Set time based on level
                 switch (currentLevel)
                 {
@@ -406,7 +409,6 @@ public sealed class GameEngine
             }
         }
     }
-
 
     public void SaveState(State stateToSave)
     {

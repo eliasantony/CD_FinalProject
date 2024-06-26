@@ -485,6 +485,12 @@
       "Color": 6,
       "PosX": 10,
       "PosY": 9
+    },
+    {
+      "Type": 2,
+      "Color": 6,
+      "PosX": 11,
+      "PosY": 9
     }
   ]
 }

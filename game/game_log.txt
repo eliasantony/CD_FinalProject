@@ -12,3 +12,50 @@
 26.06.2024 11:05:41: Created Player at (1, 1)
 26.06.2024 11:05:41: Failed to load dialog: JSON file not found at path: C:\FH - BCC\4 Semester\CD\CD_FinalProject\assets/dialogs/level0_box4.json
 26.06.2024 11:05:41: Failed to load dialog: JSON file not found at path: C:\FH - BCC\4 Semester\CD\CD_FinalProject\assets/dialogs/level0_box5.json
+26.06.2024 12:21:16: Created Player at (2, 1)
+26.06.2024 12:21:17: Created Box at (2, 2) with dialog /dialogs/level0_box1.json
+26.06.2024 12:21:17: Box added to level: 2, 2
+26.06.2024 12:21:17: Created Box at (5, 5) with dialog /dialogs/level0_box2.json
+26.06.2024 12:21:17: Box added to level: 5, 5
+26.06.2024 12:21:17: Created Box at (3, 6) with dialog /dialogs/level0_box3.json
+26.06.2024 12:21:17: Box added to level: 3, 6
+26.06.2024 12:21:28: Correct answer given. Removing box...
+26.06.2024 12:22:00: Created Player at (2, 1)
+26.06.2024 12:22:00: Created Box at (2, 2) with dialog /dialogs/level0_box1.json
+26.06.2024 12:22:00: Box added to level: 2, 2
+26.06.2024 12:22:00: Created Box at (5, 5) with dialog /dialogs/level0_box2.json
+26.06.2024 12:22:00: Box added to level: 5, 5
+26.06.2024 12:22:00: Created Box at (3, 6) with dialog /dialogs/level0_box3.json
+26.06.2024 12:22:00: Box added to level: 3, 6
+26.06.2024 12:22:13: Correct answer given. Removing box...
+26.06.2024 12:22:19: Correct answer given. Removing box...
+26.06.2024 12:22:41: Created Player at (2, 1)
+26.06.2024 12:22:41: Created Box at (2, 2) with dialog /dialogs/level0_box1.json
+26.06.2024 12:22:41: Box added to level: 2, 2
+26.06.2024 12:22:41: Created Box at (5, 5) with dialog /dialogs/level0_box2.json
+26.06.2024 12:22:41: Box added to level: 5, 5
+26.06.2024 12:22:41: Created Box at (3, 6) with dialog /dialogs/level0_box3.json
+26.06.2024 12:22:41: Box added to level: 3, 6
+26.06.2024 12:22:47: Correct answer given. Removing box...
+26.06.2024 12:22:52: Correct answer given. Removing box...
+26.06.2024 12:22:55: Correct answer given. Removing box...
+26.06.2024 12:23:01: Created Player at (1, 1)
+26.06.2024 12:23:01: Created Box at (4, 5) with dialog /dialogs/level1_box1.json
+26.06.2024 12:23:01: Box added to level: 4, 5
+26.06.2024 12:23:01: Created Box at (10, 9) with dialog /dialogs/level1_box2.json
+26.06.2024 12:23:01: Box added to level: 10, 9
+26.06.2024 12:23:01: Created Box at (11, 9) with dialog /dialogs/level1_box3.json
+26.06.2024 12:23:01: Box added to level: 11, 9
+26.06.2024 12:23:12: Correct answer given. Removing box...
+26.06.2024 12:23:17: Correct answer given. Removing box...
+26.06.2024 12:23:24: Correct answer given. Removing box...
+26.06.2024 12:23:26: Created Player at (1, 1)
+26.06.2024 12:23:26: Created Box at (5, 3) with dialog /dialogs/level2_box1.json
+26.06.2024 12:23:26: Box added to level: 5, 3
+26.06.2024 12:23:26: Created Box at (22, 2) with dialog /dialogs/level2_box2.json
+26.06.2024 12:23:26: Box added to level: 22, 2
+26.06.2024 12:23:26: Created Box at (8, 12) with dialog /dialogs/level2_box3.json
+26.06.2024 12:23:26: Box added to level: 8, 12
+26.06.2024 12:23:31: Correct answer given. Removing box...
+26.06.2024 12:23:39: Correct answer given. Removing box...
+26.06.2024 12:23:46: Correct answer given. Removing box...

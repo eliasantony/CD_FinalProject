@@ -7,6 +7,9 @@ public class Box : GameObject
     public Box(Dialog dialog) : base()
     {
         _dialog = dialog;
+        Type = GameObjectType.Box;
+        CharRepresentation = '■';
+        Color = ConsoleColor.DarkGreen;
     }
 
     public override void Interact()

@@ -1,0 +1,33 @@
+[
+  {
+    "dialogID": "1",
+    "Text": "Who painted the Mona Lisa?",
+    "Responses": [
+      {
+        "ResponseText": "Leonardo da Vinci",
+        "NextNode": {"dialogID": "2"},
+        "IsCorrect": true
+      },
+      {
+        "ResponseText": "Vincent van Gogh",
+        "NextNode": {"dialogID": "3"},
+        "IsCorrect": false
+      },
+      {
+        "ResponseText": "Pablo Picasso",
+        "NextNode": {"dialogID": "3"},
+        "IsCorrect": false
+      }
+    ]
+  },
+  {
+    "dialogID": "2",
+    "Text": "Correct!",
+    "Responses": []
+  },
+  {
+    "dialogID": "3",
+    "Text": "Wrong answer. Try again.",
+    "Responses": [{"ResponseText": "Return to start", "NextNode": {"dialogID": "1"}}]
+  }
+]

@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-
 namespace libs;
 
 public class GameObjectFactory : IGameObjectFactory
@@ -11,6 +8,12 @@ public class GameObjectFactory : IGameObjectFactory
     public GameObjectFactory(int level)
     {
         currentLevel = level;
+    }
+
+    public void SetCurrentLevel(int level)
+    {
+        currentLevel = level;
+        boxCounter = 0; // Reset the box counter for the new level
     }
 
     public GameObject CreateGameObject(dynamic obj)
