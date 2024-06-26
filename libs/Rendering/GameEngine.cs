@@ -89,11 +89,15 @@ public sealed class GameEngine
 
     public void Setup()
     {
-        LogUtility.Log($"Setting up level {currentLevel}");
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
         dynamic gameData = FileHandler.ReadJson("/levels/level" + currentLevel + ".json");
-        LogUtility.Log($"Loaded level data: {gameData}");
+
+        if (gameData == null)
+        {
+            Console.WriteLine($"Error: Level {currentLevel} data could not be loaded.");
+            return;
+        }
 
         map.MapWidth = gameData.map.width;
         map.MapHeight = gameData.map.height;
@@ -121,7 +125,6 @@ public sealed class GameEngine
         }
 
         _focusedObject = gameObjects.OfType<Player>().FirstOrDefault();
-        LogUtility.Log($"Focused object: {_focusedObject}");
 
         StartTimer();
     }
@@ -317,14 +320,14 @@ public sealed class GameEngine
             if (obj is not Player)
             {
                 map.Set(obj);
-                LogUtility.Log($"Placed {obj.GetType().Name} at ({obj.PosX}, {obj.PosY})");
+                // LogUtility.Log($"Placed {obj.GetType().Name} at ({obj.PosX}, {obj.PosY})");
             }
         });
 
         if (Player.Instance != null)
         {
             map.Set(Player.Instance);
-            LogUtility.Log($"Placed Player at ({Player.Instance.PosX}, {Player.Instance.PosY})");
+            // LogUtility.Log($"Placed Player at ({Player.Instance.PosX}, {Player.Instance.PosY})");
         }
     }
 

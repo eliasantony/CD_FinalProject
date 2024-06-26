@@ -5,15 +5,18 @@
     "Responses": [
       {
         "ResponseText": "H2O",
-        "NextNode": {"dialogID": "2"}
+        "NextNode": {"dialogID": "2"},
+        "IsCorrect": true
       },
       {
         "ResponseText": "CO2",
-        "NextNode": {"dialogID": "3"}
+        "NextNode": {"dialogID": "3"},
+        "IsCorrect": false
       },
       {
         "ResponseText": "O2",
-        "NextNode": {"dialogID": "3"}
+        "NextNode": {"dialogID": "3"},
+        "IsCorrect": false
       }
     ]
   },

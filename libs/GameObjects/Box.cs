@@ -7,9 +7,6 @@ public class Box : GameObject
     public Box(Dialog dialog) : base()
     {
         _dialog = dialog;
-        Type = GameObjectType.Box;
-        CharRepresentation = '■';
-        Color = ConsoleColor.DarkGreen;
     }
 
     public override void Interact()
@@ -18,11 +15,15 @@ public class Box : GameObject
         // Logic to clear the box if the dialog is completed successfully
         if (_dialog.IsCompletedSuccessfully)
         {
-            // Update the map to remove the box
+            LogUtility.Log("Correct answer given. Removing box...");
+            GameEngine.Instance.RemoveFromBoxesInCurrentLevel();
             GameEngine.Instance.GetMap().Set(new Floor { PosX = PosX, PosY = PosY });
             GameEngine.Instance.RemoveGameObject(this);
-            GameEngine.Instance.RemoveFromBoxesInCurrentLevel();
             GameEngine.Instance.Render();
+        }
+        else
+        {
+            LogUtility.Log("Incorrect answer. Box remains.");
         }
     }
 }

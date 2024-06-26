@@ -29,6 +29,8 @@ public class Dialog
     public void Start()
     {
         var currentNode = Nodes[0];
+        bool correctAnswerGiven = false;
+
         while (true)
         {
             Console.WriteLine(currentNode.Text);
@@ -59,7 +61,12 @@ public class Dialog
 
             if (choice >= 0 && choice < currentNode.Responses.Count)
             {
-                currentNode = currentNode.Responses[choice]?.NextNode;
+                var selectedResponse = currentNode.Responses[choice];
+                if (selectedResponse.IsCorrect)
+                {
+                    correctAnswerGiven = true;
+                }
+                currentNode = selectedResponse.NextNode;
                 if (currentNode == null)
                 {
                     Console.WriteLine("Error: Next node is null.");
@@ -72,7 +79,6 @@ public class Dialog
             }
         }
 
-        IsCompletedSuccessfully = currentNode?.Responses == null || currentNode.Responses.Count == 0;
+        IsCompletedSuccessfully = correctAnswerGiven;
     }
-
 }

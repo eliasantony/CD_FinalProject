@@ -67,11 +67,11 @@ public class Map
         {
             GameObjectLayer[posY, posX] = gameObject;
             RepresentationalLayer[posY, posX] = gameObject.CharRepresentation;
-            LogUtility.Log($"Set {gameObject.GetType().Name} at ({posX}, {posY})");
+            // LogUtility.Log($"Set {gameObject.GetType().Name} at ({posX}, {posY})");
         }
         else
         {
-            LogUtility.Log($"Failed to set {gameObject.GetType().Name} at ({posX}, {posY}) - out of bounds");
+            // LogUtility.Log($"Failed to set {gameObject.GetType().Name} at ({posX}, {posY}) - out of bounds");
         }
     }
 }

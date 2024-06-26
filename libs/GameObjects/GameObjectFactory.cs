@@ -32,7 +32,7 @@ public class GameObjectFactory : IGameObjectFactory
                     PosX = obj.PosX,
                     PosY = obj.PosY
                 };
-                LogUtility.Log($"Created Obstacle at ({obj.PosX}, {obj.PosY})");
+                // LogUtility.Log($"Created Obstacle at ({obj.PosX}, {obj.PosY})");
                 break;
             case (int)GameObjectType.Box:
                 boxCounter++;

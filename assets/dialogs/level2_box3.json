@@ -5,15 +5,18 @@
     "Responses": [
       {
         "ResponseText": "Albert Einstein",
-        "NextNode": {"dialogID": "2"}
+        "NextNode": {"dialogID": "2"},
+        "IsCorrect": true
       },
       {
         "ResponseText": "Isaac Newton",
-        "NextNode": {"dialogID": "3"}
+        "NextNode": {"dialogID": "3"},
+        "IsCorrect": false
       },
       {
         "ResponseText": "Galileo Galilei",
-        "NextNode": {"dialogID": "3"}
+        "NextNode": {"dialogID": "3"},
+        "IsCorrect": false
       }
     ]
   },

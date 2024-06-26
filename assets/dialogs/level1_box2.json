@@ -5,15 +5,18 @@
     "Responses": [
       {
         "ResponseText": "William Shakespeare",
-        "NextNode": {"dialogID": "2"}
+        "NextNode": {"dialogID": "2"},
+        "IsCorrect": true
       },
       {
         "ResponseText": "Charles Dickens",
-        "NextNode": {"dialogID": "3"}
+        "NextNode": {"dialogID": "3"},
+        "IsCorrect": false
       },
       {
         "ResponseText": "J.K. Rowling",
-        "NextNode": {"dialogID": "3"}
+        "NextNode": {"dialogID": "3"},
+        "IsCorrect": false
       }
     ]
   },
